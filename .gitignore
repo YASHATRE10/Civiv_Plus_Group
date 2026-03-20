@@ -1,0 +1,23 @@
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Java / Maven
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+*.log
+
+# Runtime data
+backend/data/
+*.mv.db
+*.trace.db
+*.lock.db
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Env files
+.env
+.env.*
