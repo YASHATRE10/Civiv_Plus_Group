@@ -28,20 +28,42 @@ export default function Register() {
         <p className="mt-2 text-sm text-slate-500">Sign up to start raising grievances</p>
         <form className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="md:col-span-2">
-            <input className="w-full rounded-xl border border-slate-200 px-4 py-3 bg-white/70" placeholder="Full Name" {...register('name', { required: 'Name is required' })} />
+            <input className="w-full rounded-xl border border-slate-200 px-4 py-3 bg-white/70" placeholder="Full Name" {...register('name', {
+              required: 'Name is required',
+              minLength: { value: 2, message: 'Name must be at least 2 characters' },
+              maxLength: { value: 60, message: 'Name must be at most 60 characters' }
+            })} />
             {errors.name && <p className="text-xs text-rose-600 mt-1">{errors.name.message}</p>}
           </div>
           <div>
-            <input className="w-full rounded-xl border border-slate-200 px-4 py-3 bg-white/70" placeholder="Email" {...register('email', { required: 'Email is required' })} />
+            <input type="email" className="w-full rounded-xl border border-slate-200 px-4 py-3 bg-white/70" placeholder="Email" {...register('email', {
+              required: 'Email is required',
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: 'Enter a valid email'
+              }
+            })} />
             {errors.email && <p className="text-xs text-rose-600 mt-1">{errors.email.message}</p>}
           </div>
           <div>
-            <input className="w-full rounded-xl border border-slate-200 px-4 py-3 bg-white/70" placeholder="Phone" {...register('phone', { required: 'Phone is required' })} />
+            <input className="w-full rounded-xl border border-slate-200 px-4 py-3 bg-white/70" placeholder="Phone" {...register('phone', {
+              required: 'Phone is required',
+              pattern: {
+                value: /^[0-9]{10}$/,
+                message: 'Phone must be exactly 10 digits'
+              }
+            })} />
             {errors.phone && <p className="text-xs text-rose-600 mt-1">{errors.phone.message}</p>}
           </div>
           <div>
-            <input type="password" className="w-full rounded-xl border border-slate-200 px-4 py-3 bg-white/70" placeholder="Password" {...register('password', { required: 'Password is required', minLength: 6 })} />
-            {errors.password && <p className="text-xs text-rose-600 mt-1">Minimum 6 characters</p>}
+            <input type="password" className="w-full rounded-xl border border-slate-200 px-4 py-3 bg-white/70" placeholder="Password" {...register('password', {
+              required: 'Password is required',
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,64}$/,
+                message: 'Use 8-64 chars with uppercase, lowercase, number and special character'
+              }
+            })} />
+            {errors.password && <p className="text-xs text-rose-600 mt-1">{errors.password.message}</p>}
           </div>
           <div>
             <select className="w-full rounded-xl border border-slate-200 px-4 py-3 bg-white/70" {...register('role', { required: true })}>

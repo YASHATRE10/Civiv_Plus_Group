@@ -10,7 +10,10 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   const isAuthEndpoint = typeof config.url === 'string' && (
-    config.url.includes('/auth/login') || config.url.includes('/auth/register')
+    config.url.includes('/auth/login') ||
+    config.url.includes('/auth/register') ||
+    config.url.includes('/auth/forgot-password') ||
+    config.url.includes('/auth/reset-password')
   );
 
   if (token && !isAuthEndpoint) {

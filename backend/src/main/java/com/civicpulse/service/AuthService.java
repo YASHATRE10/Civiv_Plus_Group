@@ -2,9 +2,13 @@ package com.civicpulse.service;
 
 import com.civicpulse.dto.AuthRequest;
 import com.civicpulse.dto.AuthResponse;
+import com.civicpulse.dto.ForgotPasswordRequest;
 import com.civicpulse.dto.RegisterRequest;
+import com.civicpulse.dto.ResetPasswordRequest;
+import com.civicpulse.entity.PasswordResetToken;
 import com.civicpulse.entity.Role;
 import com.civicpulse.entity.User;
+import com.civicpulse.repository.PasswordResetTokenRepository;
 import com.civicpulse.repository.UserRepository;
 import com.civicpulse.security.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -12,12 +16,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
@@ -54,5 +63,38 @@ public class AuthService {
                 token,
                 new AuthResponse.UserView(user.getId(), user.getName(), user.getEmail(), user.getRole(), user.getPhone())
         );
+    }
+
+    @Transactional
+    public String createPasswordResetToken(ForgotPasswordRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("No account found with this email"));
+
+        passwordResetTokenRepository.deleteByUser(user);
+
+        PasswordResetToken resetToken = new PasswordResetToken();
+        resetToken.setToken(UUID.randomUUID().toString());
+        resetToken.setUser(user);
+        resetToken.setExpiresAt(LocalDateTime.now().plusMinutes(15));
+        passwordResetTokenRepository.save(resetToken);
+
+        return resetToken.getToken();
+    }
+
+    @Transactional
+    public void resetPassword(ResetPasswordRequest request) {
+        PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(request.getToken())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid reset token"));
+
+        if (resetToken.getUsedAt() != null || resetToken.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Reset token has expired");
+        }
+
+        User user = resetToken.getUser();
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+
+        resetToken.setUsedAt(LocalDateTime.now());
+        passwordResetTokenRepository.save(resetToken);
     }
 }

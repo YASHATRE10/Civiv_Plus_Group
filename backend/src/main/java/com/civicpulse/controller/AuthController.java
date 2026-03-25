@@ -2,7 +2,9 @@ package com.civicpulse.controller;
 
 import com.civicpulse.dto.AuthRequest;
 import com.civicpulse.dto.AuthResponse;
+import com.civicpulse.dto.ForgotPasswordRequest;
 import com.civicpulse.dto.RegisterRequest;
+import com.civicpulse.dto.ResetPasswordRequest;
 import com.civicpulse.entity.Role;
 import com.civicpulse.repository.UserRepository;
 import com.civicpulse.service.AuthService;
@@ -32,6 +34,21 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {
         return ResponseEntity.ok(authService.login(request));
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Map<String, String>> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        String token = authService.createPasswordResetToken(request);
+        return ResponseEntity.ok(Map.of(
+                "message", "Password reset token generated",
+                "resetToken", token
+        ));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<Map<String, String>> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        authService.resetPassword(request);
+        return ResponseEntity.ok(Map.of("message", "Password reset successful"));
     }
 
     @GetMapping("/users")

@@ -30,8 +30,15 @@ export default function Login() {
           <div>
             <input
               className="w-full rounded-xl border border-slate-200 px-4 py-3 bg-white/70"
+              type="email"
               placeholder="Email"
-              {...register('email', { required: 'Email is required' })}
+              {...register('email', {
+                required: 'Email is required',
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: 'Enter a valid email'
+                }
+              })}
             />
             {errors.email && <p className="text-xs text-rose-600 mt-1">{errors.email.message}</p>}
           </div>
@@ -40,13 +47,22 @@ export default function Login() {
               type="password"
               className="w-full rounded-xl border border-slate-200 px-4 py-3 bg-white/70"
               placeholder="Password"
-              {...register('password', { required: 'Password is required' })}
+              {...register('password', {
+                required: 'Password is required',
+                minLength: {
+                  value: 6,
+                  message: 'Password must be at least 6 characters'
+                }
+              })}
             />
             {errors.password && <p className="text-xs text-rose-600 mt-1">{errors.password.message}</p>}
           </div>
           <label className="inline-flex items-center gap-2 text-sm text-slate-600">
             <input type="checkbox" className="rounded" /> Remember me
           </label>
+          <p className="text-sm text-right">
+            <Link to="/forgot-password" className="text-primary font-medium">Forgot password?</Link>
+          </p>
           {error && <p className="text-sm text-rose-600">{error}</p>}
           <button disabled={isSubmitting} className="w-full rounded-xl bg-primary text-white py-3 font-medium hover:opacity-95">
             {isSubmitting ? 'Signing in...' : 'Login'}
