@@ -209,7 +209,7 @@ function AdminRow({ complaint, officers, onAssign }) {
         </select>
       </td>
       <td>
-        <button disabled={!officerId} onClick={() => onAssign(complaint.id, officerId, priority)} className="px-3 py-1 rounded-lg bg-primary text-white disabled:opacity-50">Assign</button>
+        <button disabled={!officerId || complaint.status === 'RESOLVED'} onClick={() => onAssign(complaint.id, officerId, priority)} className="px-3 py-1 rounded-lg bg-primary text-white disabled:opacity-50" title={complaint.status === 'RESOLVED' ? 'Cannot reassign resolved complaints' : ''}>Assign</button>
       </td>
     </tr>
   );

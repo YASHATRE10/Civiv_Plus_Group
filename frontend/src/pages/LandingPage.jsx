@@ -3,14 +3,17 @@ import { useAuth } from '../context/AuthContext';
 
 const highlights = [
   {
+    emoji: '📍',
     title: 'Real-Time Grievance Tracking',
     description: 'Submit complaints and monitor status updates from submission to resolution.'
   },
   {
+    emoji: '🧭',
     title: 'Role-Based Transparency',
     description: 'Citizens, officers, and administrators work in a clear, accountable workflow.'
   },
   {
+    emoji: '📊',
     title: 'Evidence-Ready Reporting',
     description: 'Attach supporting images and feedback to improve service quality and trust.'
   }
@@ -20,12 +23,12 @@ export default function LandingPage() {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen px-4 py-8 md:py-12">
+    <div className="min-h-screen px-4 py-8 md:py-12 page-enter">
       <div className="max-w-6xl mx-auto space-y-8">
-        <header className="glass rounded-2xl p-6 md:p-10 shadow-soft border border-white/50">
-          <p className="text-sm font-semibold uppercase tracking-wider text-primary">CivicPulse Hub</p>
+        <header className="glass rounded-2xl p-6 md:p-10 shadow-soft border border-white/50 fade-up">
+          <p className="text-sm font-semibold uppercase tracking-wider text-primary">CivicPulse Hub ✨</p>
           <h1 className="text-3xl md:text-5xl font-heading font-bold text-slate-900 mt-2 leading-tight">
-            Your City's Digital Grievance and Service Transparency Portal
+            Your City's Digital Grievance and Service Transparency Portal 🏛️
           </h1>
           <p className="mt-4 text-slate-600 max-w-3xl text-base md:text-lg">
             CivicPulse helps residents report civic issues, track progress, and share feedback while enabling officers and admins to respond faster with data-driven accountability.
@@ -35,7 +38,7 @@ export default function LandingPage() {
             {user ? (
               <Link
                 to="/dashboard"
-                className="rounded-xl bg-primary text-white px-5 py-3 font-semibold shadow-soft"
+                className="rounded-xl bg-primary text-white px-5 py-3 font-semibold shadow-soft hover-lift btn-shine"
               >
                 Open My Dashboard
               </Link>
@@ -43,13 +46,13 @@ export default function LandingPage() {
               <>
                 <Link
                   to="/login"
-                  className="rounded-xl bg-primary text-white px-5 py-3 font-semibold shadow-soft"
+                  className="rounded-xl bg-primary text-white px-5 py-3 font-semibold shadow-soft hover-lift btn-shine"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="rounded-xl bg-secondary text-white px-5 py-3 font-semibold shadow-soft"
+                  className="rounded-xl bg-secondary text-white px-5 py-3 font-semibold shadow-soft hover-lift btn-shine"
                 >
                   Create Account
                 </Link>
@@ -59,27 +62,32 @@ export default function LandingPage() {
         </header>
 
         <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {highlights.map((item) => (
-            <article key={item.title} className="glass rounded-2xl p-6 shadow-card border border-white/50">
-              <h2 className="text-lg font-heading font-semibold text-slate-900">{item.title}</h2>
+          {highlights.map((item, index) => (
+            <article
+              key={item.title}
+              className={`glass rounded-2xl p-6 shadow-card border border-white/50 hover-lift fade-up ${
+                index === 0 ? 'fade-up-delay-1' : index === 1 ? 'fade-up-delay-2' : 'fade-up-delay-3'
+              }`}
+            >
+              <h2 className="text-lg font-heading font-semibold text-slate-900">{item.emoji} {item.title}</h2>
               <p className="mt-2 text-sm text-slate-600 leading-relaxed">{item.description}</p>
             </article>
           ))}
         </section>
 
-        <section className="glass rounded-2xl p-6 md:p-8 shadow-card border border-white/50">
-          <h2 className="text-2xl font-heading font-semibold text-slate-900">How It Works</h2>
+        <section className="glass rounded-2xl p-6 md:p-8 shadow-card border border-white/50 fade-up fade-up-delay-2">
+          <h2 className="text-2xl font-heading font-semibold text-slate-900">How It Works ⚙️</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-            <div className="rounded-xl bg-white/70 p-4">
-              <p className="text-sm font-semibold text-primary">Step 1</p>
+            <div className="rounded-xl bg-white/70 p-4 hover-lift">
+              <p className="text-sm font-semibold text-primary">Step 1 📝</p>
               <p className="text-sm text-slate-700 mt-1">Citizens submit complaints with details, category, and location.</p>
             </div>
-            <div className="rounded-xl bg-white/70 p-4">
-              <p className="text-sm font-semibold text-primary">Step 2</p>
+            <div className="rounded-xl bg-white/70 p-4 hover-lift">
+              <p className="text-sm font-semibold text-primary">Step 2 🛠️</p>
               <p className="text-sm text-slate-700 mt-1">Officers review, assign priority, and update progress transparently.</p>
             </div>
-            <div className="rounded-xl bg-white/70 p-4">
-              <p className="text-sm font-semibold text-primary">Step 3</p>
+            <div className="rounded-xl bg-white/70 p-4 hover-lift">
+              <p className="text-sm font-semibold text-primary">Step 3 ✅</p>
               <p className="text-sm text-slate-700 mt-1">Citizens confirm resolution and provide feedback to improve services.</p>
             </div>
           </div>

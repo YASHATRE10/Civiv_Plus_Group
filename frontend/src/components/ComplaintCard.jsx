@@ -3,7 +3,7 @@ import { STATUS_COLORS } from '../utils/constants';
 
 export default function ComplaintCard({ complaint, actionSlot }) {
   return (
-    <div className="glass rounded-2xl p-4 shadow-card">
+    <div className="glass rounded-2xl p-4 shadow-card hover-lift fade-up fade-up-delay-1">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3 className="font-semibold text-slate-800">{complaint.title}</h3>

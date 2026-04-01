@@ -47,7 +47,7 @@ export default function ComplaintDetails() {
       </div>
       <div className="text-sm text-slate-600 space-y-1">
         <p>Category: {complaint.category.replace('_', ' ')}</p>
-        <p>Location: {complaint.location}</p>
+        <p>Area / Address: {complaint.location}</p>
         <p>Priority: {complaint.priority}</p>
       </div>
       {complaint.imageUrl && <img src={`http://localhost:8080${complaint.imageUrl}`} alt="complaint" className="rounded-xl h-64 object-cover" />}

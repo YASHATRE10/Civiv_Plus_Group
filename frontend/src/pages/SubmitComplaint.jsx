@@ -10,7 +10,18 @@ export default function SubmitComplaint() {
   const [locationStatus, setLocationStatus] = useState('idle');
   const { register, handleSubmit, reset, setValue, formState: { errors, isSubmitting } } = useForm();
 
-  const detectLocation = () => {
+  const toReadableAddress = (data) => {
+    const parts = [
+      data.locality,
+      data.city,
+      data.principalSubdivision,
+      data.countryName
+    ].filter(Boolean);
+
+    return parts.join(', ');
+  };
+
+  const detectLocation = async () => {
     if (!navigator.geolocation) {
       setLocationStatus('unsupported');
       setToast({ message: 'Geolocation is not supported on this device', type: 'error' });
@@ -18,16 +29,36 @@ export default function SubmitComplaint() {
     }
 
     setLocationStatus('loading');
+
     navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        const deviceLocation = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
-        setValue('location', deviceLocation, { shouldValidate: true, shouldDirty: true });
-        setLocationStatus('success');
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          const response = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+          );
+
+          if (!response.ok) {
+            throw new Error('Unable to reverse geocode location');
+          }
+
+          const geoData = await response.json();
+          const readableAddress = toReadableAddress(geoData);
+
+          if (!readableAddress) {
+            throw new Error('Address not available for this location');
+          }
+
+          setValue('location', readableAddress, { shouldValidate: true, shouldDirty: true });
+          setLocationStatus('success');
+        } catch {
+          setLocationStatus('error');
+          setToast({ message: 'Could not detect area/address from your location. Please enter manually.', type: 'error' });
+        }
       },
       () => {
         setLocationStatus('error');
-        setToast({ message: 'Unable to detect location. Please enable location permission.', type: 'error' });
+        setToast({ message: 'Unable to access device location. Please enable permission.', type: 'error' });
       },
       {
         enableHighAccuracy: true,
@@ -55,7 +86,7 @@ export default function SubmitComplaint() {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       reset();
-      detectLocation();
+      setLocationStatus('idle');
       setPreview('');
       setToast({ message: 'Complaint submitted successfully', type: 'success' });
     } catch (err) {
@@ -78,21 +109,21 @@ export default function SubmitComplaint() {
           <select className="rounded-xl border border-slate-200 px-4 py-3" {...register('category', { required: true })}>
             {COMPLAINT_CATEGORIES.map((cat) => <option key={cat} value={cat}>{cat.replace('_', ' ')}</option>)}
           </select>
-          <div className="space-y-2">
-            <input
-              className="w-full rounded-xl border border-slate-200 px-4 py-3"
-              placeholder={locationStatus === 'loading' ? 'Detecting your location...' : 'Location'}
-              {...register('location', { required: true })}
-            />
-            <button
-              type="button"
-              onClick={detectLocation}
-              className="text-xs text-primary font-medium"
-            >
-              {locationStatus === 'loading' ? 'Detecting location...' : 'Use my current location'}
-            </button>
-          </div>
+          <input
+            className="w-full rounded-xl border border-slate-200 px-4 py-3"
+            placeholder={locationStatus === 'loading' ? 'Detecting your area/address...' : 'Area / Address (e.g., Sector 9, Block C)'}
+            {...register('location', { required: 'Area/Address is required' })}
+          />
+          <button
+            type="button"
+            onClick={detectLocation}
+            className="text-xs text-primary font-medium text-left"
+            disabled={locationStatus === 'loading'}
+          >
+            {locationStatus === 'loading' ? 'Detecting area/address...' : 'Use my current location'}
+          </button>
         </div>
+        {errors.location && <p className="text-xs text-rose-600 -mt-2">{errors.location.message}</p>}
         <input
           type="file"
           accept="image/*"

@@ -28,6 +28,7 @@ public class ComplaintService {
 
     private final ComplaintRepository complaintRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     public ComplaintResponse createComplaint(
@@ -88,7 +89,9 @@ public class ComplaintService {
         complaint.setDeadline(request.getDeadline() != null ? LocalDate.parse(request.getDeadline()) : null);
         complaint.setStatus(ComplaintStatus.IN_PROGRESS);
 
-        return ComplaintResponse.fromEntity(complaintRepository.save(complaint));
+        Complaint savedComplaint = complaintRepository.save(complaint);
+        notificationService.createAssignmentNotification(officer, savedComplaint);
+        return ComplaintResponse.fromEntity(savedComplaint);
     }
 
     @Transactional
@@ -101,6 +104,8 @@ public class ComplaintService {
         Complaint complaint = complaintRepository.findById(complaintId)
                 .orElseThrow(() -> new IllegalArgumentException("Complaint not found"));
 
+        ComplaintStatus previousStatus = complaint.getStatus();
+
         complaint.setStatus(request.getStatus());
         complaint.setResolutionNote(request.getResolutionNote());
 
@@ -112,7 +117,13 @@ public class ComplaintService {
             complaint.setProofImage(storeFile(proofImage));
         }
 
-        return ComplaintResponse.fromEntity(complaintRepository.save(complaint));
+        Complaint savedComplaint = complaintRepository.save(complaint);
+
+        if (previousStatus != savedComplaint.getStatus()) {
+            notificationService.createStatusUpdateNotification(savedComplaint.getCitizen(), savedComplaint, previousStatus);
+        }
+
+        return ComplaintResponse.fromEntity(savedComplaint);
     }
 
     private String storeFile(MultipartFile file) {
