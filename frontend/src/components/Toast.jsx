@@ -12,7 +12,7 @@ export default function Toast({ message, type = 'success', onClose }) {
       >
         <div className="flex items-center gap-3">
           <span>{message}</span>
-          <button onClick={onClose} className="font-bold">x</button>
+          <button onClick={onClose} className="font-bold" aria-label="Close notification">x</button>
         </div>
       </div>
     </div>

@@ -1,0 +1,296 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "dashboard": "Dashboard",
+    "submitComplaint": "Submit Complaint",
+    "trackStatus": "Track Status",
+    "feedback": "Feedback",
+    "logout": "Logout",
+    "loading": "Loading...",
+    "refresh": "Refresh",
+    "retry": "Retry",
+    "view": "View"
+  },
+  "navbar": {
+    "tagline": "Smart City Grievance Portal",
+    "themeLight": "Switch to light mode",
+    "themeDark": "Switch to dark mode",
+    "light": "Light",
+    "dark": "Dark",
+    "notifications": "Notifications",
+    "markAllRead": "Mark all read",
+    "loadingNotifications": "Loading notifications...",
+    "noNotifications": "No notifications yet.",
+    "viewComplaint": "View complaint",
+    "markRead": "Mark read",
+    "language": "Language",
+    "english": "English",
+    "hindi": "Hindi",
+    "marathi": "Marathi"
+  },
+  "login": {
+    "access": "Citizen Access",
+    "welcomeBack": "Welcome Back",
+    "description": "Sign in to track complaints, view updates, and stay connected with city services.",
+    "emailPlaceholder": "Email address",
+    "passwordPlaceholder": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "signingIn": "Signing in...",
+    "signIn": "Sign in",
+    "localTracking": "Local issue tracking",
+    "realtimeNotifications": "Real-time notifications",
+    "secureAccess": "Secure role-based access",
+    "portal": "CivicPulse Portal",
+    "buildCity": "Build A Better City, Together",
+    "asideDescription": "Report civic issues, monitor progress, and collaborate with officers and admins in one transparent platform.",
+    "submit247": "24x7 complaint submission",
+    "trackUpdates": "Track every status update",
+    "feedbackAfterResolution": "Give feedback after resolution",
+    "createAccount": "Create new account"
+  },
+  "register": {
+    "join": "Join CivicPulse",
+    "title": "Be Part Of Smarter Governance",
+    "description": "Create your account to report issues, collaborate with authorities, and improve local services for everyone.",
+    "easyOnboarding": "Easy onboarding for citizens and officers",
+    "transparentWorkflow": "Transparent assignment workflow",
+    "betterInsights": "Better city insights through data",
+    "alreadyAccount": "Already have an account? Sign in",
+    "accountCreation": "Account Creation",
+    "createAccount": "Create Your Account",
+    "registerDescription": "Register to submit grievances, track tasks, and receive updates.",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "password": "Password",
+    "selectRole": "Select role",
+    "citizen": "Citizen",
+    "officer": "Officer",
+    "creating": "Creating account...",
+    "create": "Create account",
+    "registrationSuccess": "Registration successful. Please login.",
+    "registrationFailed": "Registration failed",
+    "validation": {
+      "nameRequired": "Name is required",
+      "nameMin": "Name must be at least 2 characters",
+      "nameMax": "Name must be at most 60 characters",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email",
+      "phoneRequired": "Phone is required",
+      "phoneInvalid": "Phone must be exactly 10 digits",
+      "passwordRequired": "Password is required",
+      "passwordInvalid": "Use 8-64 chars with uppercase, lowercase, number and special character",
+      "roleRequired": "Role is required"
+    }
+  },
+  "landing": {
+    "badge": "CivicPulse Hub",
+    "title": "Your City's Digital Grievance and Service Transparency Portal",
+    "description": "CivicPulse helps residents report civic issues, track progress, and share feedback while enabling officers and admins to respond faster with data-driven accountability.",
+    "openDashboard": "Open My Dashboard",
+    "login": "Login",
+    "createAccount": "Create Account",
+    "howItWorks": "How It Works",
+    "highlights": {
+      "tracking": {
+        "title": "Real-Time Grievance Tracking",
+        "description": "Submit complaints and monitor status updates from submission to resolution."
+      },
+      "transparency": {
+        "title": "Role-Based Transparency",
+        "description": "Citizens, officers, and administrators work in a clear, accountable workflow."
+      },
+      "reporting": {
+        "title": "Evidence-Ready Reporting",
+        "description": "Attach supporting images and feedback to improve service quality and trust."
+      }
+    },
+    "steps": {
+      "oneTitle": "Step 1",
+      "oneDescription": "Citizens submit complaints with details, category, and location.",
+      "twoTitle": "Step 2",
+      "twoDescription": "Officers review, assign priority, and update progress transparently.",
+      "threeTitle": "Step 3",
+      "threeDescription": "Citizens confirm resolution and provide feedback to improve services."
+    }
+  },
+  "forgotPassword": {
+    "title": "Forgot password",
+    "description": "Enter your account email to get a reset token.",
+    "generated": "Reset token generated",
+    "failed": "Unable to process request",
+    "generating": "Generating token...",
+    "generate": "Generate reset token",
+    "useToken": "Use this token to reset your password:",
+    "continueReset": "Continue to reset password",
+    "backTo": "Back to",
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email"
+    }
+  },
+  "resetPassword": {
+    "title": "Reset password",
+    "description": "Enter reset token and your new password.",
+    "passwordMismatch": "Passwords do not match",
+    "success": "Password reset successful. Redirecting to login...",
+    "failed": "Unable to reset password",
+    "token": "Reset token",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm new password",
+    "resetting": "Resetting...",
+    "reset": "Reset password",
+    "validation": {
+      "tokenRequired": "Token is required",
+      "tokenInvalid": "Invalid reset token",
+      "passwordRequired": "Password is required",
+      "confirmRequired": "Confirm your password"
+    }
+  },
+  "citizenDashboard": {
+    "title": "Citizen Dashboard",
+    "description": "Track your civic grievances and service feedback",
+    "myComplaints": "My Complaints",
+    "failedLoad": "Failed to load complaints",
+    "columns": {
+      "id": "ID",
+      "title": "Title",
+      "category": "Category",
+      "status": "Status",
+      "date": "Date",
+      "details": "Details"
+    }
+  },
+  "sidebar": {
+    "navigation": "Navigation",
+    "citizen": {
+      "dashboard": "Dashboard",
+      "submit": "Submit Complaint",
+      "myComplaints": "My Complaints"
+    },
+    "admin": {
+      "dashboard": "Admin Dashboard",
+      "analytics": "Analytics"
+    },
+    "officer": {
+      "panel": "Officer Panel"
+    }
+  },
+  "complaintDetails": {
+    "failedLoad": "Failed to load complaint details",
+    "notFound": "Complaint not found.",
+    "title": "Complaint #{{id}}",
+    "category": "Category",
+    "location": "Area / Address",
+    "priority": "Priority",
+    "rateService": "Rate Service",
+    "reopen": "Reopen Complaint"
+  },
+  "ratingStars": {
+    "rate": "Rate {{value}} stars"
+  },
+  "adminDashboard": {
+    "title": "Admin Command Center",
+    "failedLoad": "Failed to load admin dashboard",
+    "cards": {
+      "total": "Total Complaints",
+      "pending": "Pending",
+      "resolved": "Resolved",
+      "avgResolution": "Avg Resolution (days)",
+      "activeOfficers": "Active Officers"
+    },
+    "charts": {
+      "byCategory": "Complaints by Category",
+      "monthly": "Monthly Complaints",
+      "resolutionTrend": "Resolution Time Trend",
+      "days": "Days",
+      "complaints": "Complaints",
+      "problemZones": "Problem Zones Heat Cards",
+      "zone": "Zone"
+    },
+    "manage": {
+      "title": "Manage Complaints",
+      "search": "Search",
+      "all": "All",
+      "pending": "Pending",
+      "inProgress": "In Progress",
+      "resolved": "Resolved",
+      "reopened": "Reopened",
+      "columns": {
+        "id": "ID",
+        "title": "Title",
+        "status": "Status",
+        "date": "Date",
+        "assign": "Assign",
+        "priority": "Priority",
+        "action": "Action"
+      },
+      "selectOfficer": "Select officer",
+      "assignButton": "Assign",
+      "assignDisabled": "Cannot reassign resolved complaints",
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    }
+  },
+  "officerDashboard": {
+    "title": "Officer Panel",
+    "description": "Manage assigned complaints and resolution progress",
+    "failedLoad": "Failed to load assigned complaints",
+    "statusUpdated": "Status updated",
+    "updateFailed": "Update failed",
+    "defaultResolutionNote": "Updated by officer",
+    "emptyTitle": "No complaints assigned yet",
+    "emptyDescription": "This page is working. It is empty because no complaint has been assigned to your officer account yet.",
+    "addResolutionNote": "Add resolution note",
+    "inProgress": "In Progress",
+    "resolve": "Resolve"
+  },
+  "submitComplaint": {
+    "title": "Submit Grievance",
+    "description": "Raise an issue and help improve your city",
+    "complaintTitle": "Complaint Title",
+    "complaintDescription": "Description",
+    "detectingAddress": "Detecting your area/address...",
+    "addressPlaceholder": "Area / Address (e.g., Sector 9, Block C)",
+    "useCurrentLocation": "Use my current location",
+    "submitted": "Complaint submitted successfully",
+    "submitFailed": "Failed to submit complaint",
+    "submitting": "Submitting...",
+    "submit": "Submit Complaint",
+    "locationUnsupported": "Geolocation is not supported on this device",
+    "locationReverseFailed": "Could not detect area/address from your location. Please enter manually.",
+    "locationPermissionFailed": "Unable to access device location. Please enable permission.",
+    "validation": {
+      "titleRequired": "Title is required",
+      "descriptionRequired": "Description is required",
+      "locationRequired": "Area/Address is required"
+    }
+  },
+  "feedbackPage": {
+    "title": "Rate Resolution Service",
+    "description": "Share your feedback to improve service quality",
+    "commentPlaceholder": "Comment",
+    "submitting": "Submitting...",
+    "submit": "Submit Feedback",
+    "failed": "Failed to submit feedback"
+  },
+  "status": {
+    "PENDING": "Pending",
+    "IN_PROGRESS": "In Progress",
+    "RESOLVED": "Resolved",
+    "REOPENED": "Reopened"
+  },
+  "categories": {
+    "WATER_SUPPLY": "Water Supply",
+    "STREET_LIGHT": "Street Light",
+    "GARBAGE": "Garbage",
+    "ROAD_DAMAGE": "Road Damage",
+    "PUBLIC_SAFETY": "Public Safety"
+  },
+  "auth": {
+    "invalidCredentials": "Invalid credentials",
+    "passwordMin": "Password must be at least 6 characters"
+  }
+}

@@ -1,37 +1,39 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 
-const highlights = [
-  {
-    emoji: '📍',
-    title: 'Real-Time Grievance Tracking',
-    description: 'Submit complaints and monitor status updates from submission to resolution.'
-  },
-  {
-    emoji: '🧭',
-    title: 'Role-Based Transparency',
-    description: 'Citizens, officers, and administrators work in a clear, accountable workflow.'
-  },
-  {
-    emoji: '📊',
-    title: 'Evidence-Ready Reporting',
-    description: 'Attach supporting images and feedback to improve service quality and trust.'
-  }
-];
-
 export default function LandingPage() {
+  const { t } = useTranslation();
   const { user } = useAuth();
+
+  const highlights = [
+    {
+      emoji: '📍',
+      title: t('landing.highlights.tracking.title'),
+      description: t('landing.highlights.tracking.description')
+    },
+    {
+      emoji: '🧭',
+      title: t('landing.highlights.transparency.title'),
+      description: t('landing.highlights.transparency.description')
+    },
+    {
+      emoji: '📊',
+      title: t('landing.highlights.reporting.title'),
+      description: t('landing.highlights.reporting.description')
+    }
+  ];
 
   return (
     <div className="min-h-screen px-4 py-8 md:py-12 page-enter">
       <div className="max-w-6xl mx-auto space-y-8">
         <header className="glass rounded-2xl p-6 md:p-10 shadow-soft border border-white/50 fade-up">
-          <p className="text-sm font-semibold uppercase tracking-wider text-primary">CivicPulse Hub ✨</p>
+          <p className="text-sm font-semibold uppercase tracking-wider text-primary">{t('landing.badge')} ✨</p>
           <h1 className="text-3xl md:text-5xl font-heading font-bold text-slate-900 mt-2 leading-tight">
-            Your City's Digital Grievance and Service Transparency Portal 🏛️
+            {t('landing.title')} 🏛️
           </h1>
           <p className="mt-4 text-slate-600 max-w-3xl text-base md:text-lg">
-            CivicPulse helps residents report civic issues, track progress, and share feedback while enabling officers and admins to respond faster with data-driven accountability.
+            {t('landing.description')}
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3">
@@ -40,7 +42,7 @@ export default function LandingPage() {
                 to="/dashboard"
                 className="rounded-xl bg-primary text-white px-5 py-3 font-semibold shadow-soft hover-lift btn-shine"
               >
-                Open My Dashboard
+                {t('landing.openDashboard')}
               </Link>
             ) : (
               <>
@@ -48,13 +50,13 @@ export default function LandingPage() {
                   to="/login"
                   className="rounded-xl bg-primary text-white px-5 py-3 font-semibold shadow-soft hover-lift btn-shine"
                 >
-                  Login
+                  {t('landing.login')}
                 </Link>
                 <Link
                   to="/register"
                   className="rounded-xl bg-secondary text-white px-5 py-3 font-semibold shadow-soft hover-lift btn-shine"
                 >
-                  Create Account
+                  {t('landing.createAccount')}
                 </Link>
               </>
             )}
@@ -76,19 +78,19 @@ export default function LandingPage() {
         </section>
 
         <section className="glass rounded-2xl p-6 md:p-8 shadow-card border border-white/50 fade-up fade-up-delay-2">
-          <h2 className="text-2xl font-heading font-semibold text-slate-900">How It Works ⚙️</h2>
+          <h2 className="text-2xl font-heading font-semibold text-slate-900">{t('landing.howItWorks')} ⚙️</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             <div className="rounded-xl bg-white/70 p-4 hover-lift">
-              <p className="text-sm font-semibold text-primary">Step 1 📝</p>
-              <p className="text-sm text-slate-700 mt-1">Citizens submit complaints with details, category, and location.</p>
+              <p className="text-sm font-semibold text-primary">{t('landing.steps.oneTitle')} 📝</p>
+              <p className="text-sm text-slate-700 mt-1">{t('landing.steps.oneDescription')}</p>
             </div>
             <div className="rounded-xl bg-white/70 p-4 hover-lift">
-              <p className="text-sm font-semibold text-primary">Step 2 🛠️</p>
-              <p className="text-sm text-slate-700 mt-1">Officers review, assign priority, and update progress transparently.</p>
+              <p className="text-sm font-semibold text-primary">{t('landing.steps.twoTitle')} 🛠️</p>
+              <p className="text-sm text-slate-700 mt-1">{t('landing.steps.twoDescription')}</p>
             </div>
             <div className="rounded-xl bg-white/70 p-4 hover-lift">
-              <p className="text-sm font-semibold text-primary">Step 3 ✅</p>
-              <p className="text-sm text-slate-700 mt-1">Citizens confirm resolution and provide feedback to improve services.</p>
+              <p className="text-sm font-semibold text-primary">{t('landing.steps.threeTitle')} ✅</p>
+              <p className="text-sm text-slate-700 mt-1">{t('landing.steps.threeDescription')}</p>
             </div>
           </div>
         </section>

@@ -3,6 +3,7 @@ import { useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Loader from './components/Loader';
+import GlobalLanguageSwitcher from './components/GlobalLanguageSwitcher';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -63,95 +64,98 @@ function Layout({ children }) {
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/dashboard" element={<RoleRedirect />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
+    <>
+      <GlobalLanguageSwitcher />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/dashboard" element={<RoleRedirect />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
-      <Route
-        path="/citizen"
-        element={
-          <ProtectedRoute roles={['CITIZEN']}>
-            <Layout>
-              <CitizenDashboard />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/submit"
-        element={
-          <ProtectedRoute roles={['CITIZEN']}>
-            <Layout>
-              <SubmitComplaint />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/my-complaints"
-        element={
-          <ProtectedRoute roles={['CITIZEN']}>
-            <Layout>
-              <MyComplaints />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin"
-        element={
-          <ProtectedRoute roles={['ADMIN']}>
-            <Layout>
-              <AdminDashboard />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/analytics"
-        element={
-          <ProtectedRoute roles={['ADMIN']}>
-            <Layout>
-              <AdminDashboard chartOnly />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/officer"
-        element={
-          <ProtectedRoute roles={['OFFICER']}>
-            <Layout>
-              <OfficerDashboard />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/complaints/:id"
-        element={
-          <ProtectedRoute roles={['CITIZEN', 'ADMIN', 'OFFICER']}>
-            <Layout>
-              <ComplaintDetails />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/feedback/:id"
-        element={
-          <ProtectedRoute roles={['CITIZEN']}>
-            <Layout>
-              <FeedbackPage />
-            </Layout>
-          </ProtectedRoute>
-        }
-      />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        <Route
+          path="/citizen"
+          element={
+            <ProtectedRoute roles={['CITIZEN']}>
+              <Layout>
+                <CitizenDashboard />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/submit"
+          element={
+            <ProtectedRoute roles={['CITIZEN']}>
+              <Layout>
+                <SubmitComplaint />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-complaints"
+          element={
+            <ProtectedRoute roles={['CITIZEN']}>
+              <Layout>
+                <MyComplaints />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute roles={['ADMIN']}>
+              <Layout>
+                <AdminDashboard />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute roles={['ADMIN']}>
+              <Layout>
+                <AdminDashboard chartOnly />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/officer"
+          element={
+            <ProtectedRoute roles={['OFFICER']}>
+              <Layout>
+                <OfficerDashboard />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/complaints/:id"
+          element={
+            <ProtectedRoute roles={['CITIZEN', 'ADMIN', 'OFFICER']}>
+              <Layout>
+                <ComplaintDetails />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/feedback/:id"
+          element={
+            <ProtectedRoute roles={['CITIZEN']}>
+              <Layout>
+                <FeedbackPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
   );
 }

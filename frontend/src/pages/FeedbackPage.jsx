@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import RatingStars from '../components/RatingStars';
 import api from '../services/api';
 import Toast from '../components/Toast';
 
 export default function FeedbackPage() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const [rating, setRating] = useState(4);
@@ -22,7 +24,7 @@ export default function FeedbackPage() {
       });
       navigate('/citizen');
     } catch (err) {
-      setToast({ message: err.response?.data?.message || 'Failed to submit feedback', type: 'error' });
+      setToast({ message: err.response?.data?.message || t('feedbackPage.failed'), type: 'error' });
     } finally {
       setLoading(false);
     }
@@ -31,12 +33,12 @@ export default function FeedbackPage() {
   return (
     <div className="glass rounded-2xl p-6 shadow-card max-w-xl space-y-4">
       <Toast message={toast.message} type={toast.type} onClose={() => setToast({ message: '', type: 'success' })} />
-      <h2 className="text-2xl font-heading font-semibold">Rate Resolution Service</h2>
-      <p className="text-sm text-slate-500">Share your feedback to improve service quality</p>
+      <h2 className="text-2xl font-heading font-semibold">{t('feedbackPage.title')}</h2>
+      <p className="text-sm text-slate-500">{t('feedbackPage.description')}</p>
       <RatingStars value={rating} onChange={setRating} />
-      <textarea value={comment} onChange={(e) => setComment(e.target.value)} className="w-full rounded-xl border border-slate-200 px-4 py-3 min-h-28" placeholder="Comment" />
+      <textarea value={comment} onChange={(e) => setComment(e.target.value)} className="w-full rounded-xl border border-slate-200 px-4 py-3 min-h-28" placeholder={t('feedbackPage.commentPlaceholder')} />
       <button disabled={loading} onClick={submitFeedback} className="rounded-xl bg-secondary text-white px-6 py-3">
-        {loading ? 'Submitting...' : 'Submit Feedback'}
+        {loading ? t('feedbackPage.submitting') : t('feedbackPage.submit')}
       </button>
     </div>
   );

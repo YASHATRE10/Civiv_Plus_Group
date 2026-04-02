@@ -1,9 +1,11 @@
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 
 export default function ResetPassword() {
+  const { t } = useTranslation();
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const [error, setError] = useState('');
@@ -19,7 +21,7 @@ export default function ResetPassword() {
       setError('');
       setSuccess('');
       if (values.newPassword !== values.confirmPassword) {
-        setError('Passwords do not match');
+        setError(t('resetPassword.passwordMismatch'));
         return;
       }
 
@@ -27,29 +29,29 @@ export default function ResetPassword() {
         token: values.token,
         newPassword: values.newPassword
       });
-      setSuccess('Password reset successful. Redirecting to login...');
+      setSuccess(t('resetPassword.success'));
       setTimeout(() => navigate('/login'), 1000);
     } catch (err) {
-      setError(err.response?.data?.message || 'Unable to reset password');
+      setError(err.response?.data?.message || t('resetPassword.failed'));
     }
   };
 
   return (
     <div className="min-h-screen grid place-items-center p-4">
       <div className="glass w-full max-w-md rounded-3xl shadow-soft p-8">
-        <h1 className="text-3xl font-heading font-semibold gradient-text">Reset password</h1>
-        <p className="mt-2 text-sm text-slate-500">Enter reset token and your new password.</p>
+        <h1 className="text-3xl font-heading font-semibold gradient-text">{t('resetPassword.title')}</h1>
+        <p className="mt-2 text-sm text-slate-500">{t('resetPassword.description')}</p>
 
         <form className="mt-6 space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <input
               className="w-full rounded-xl border border-slate-200 px-4 py-3 bg-white/70"
-              placeholder="Reset token"
+              placeholder={t('resetPassword.token')}
               {...register('token', {
-                required: 'Token is required',
+                required: t('resetPassword.validation.tokenRequired'),
                 minLength: {
                   value: 20,
-                  message: 'Invalid reset token'
+                  message: t('resetPassword.validation.tokenInvalid')
                 }
               })}
             />
@@ -60,12 +62,12 @@ export default function ResetPassword() {
             <input
               type="password"
               className="w-full rounded-xl border border-slate-200 px-4 py-3 bg-white/70"
-              placeholder="New password"
+              placeholder={t('resetPassword.newPassword')}
               {...register('newPassword', {
-                required: 'Password is required',
+                required: t('resetPassword.validation.passwordRequired'),
                 pattern: {
                   value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,64}$/,
-                  message: 'Use 8-64 chars with uppercase, lowercase, number and special character'
+                  message: t('register.validation.passwordInvalid')
                 }
               })}
             />
@@ -76,8 +78,8 @@ export default function ResetPassword() {
             <input
               type="password"
               className="w-full rounded-xl border border-slate-200 px-4 py-3 bg-white/70"
-              placeholder="Confirm new password"
-              {...register('confirmPassword', { required: 'Confirm your password' })}
+              placeholder={t('resetPassword.confirmPassword')}
+              {...register('confirmPassword', { required: t('resetPassword.validation.confirmRequired') })}
             />
             {errors.confirmPassword && <p className="text-xs text-rose-600 mt-1">{errors.confirmPassword.message}</p>}
           </div>
@@ -86,12 +88,12 @@ export default function ResetPassword() {
           {success && <p className="text-sm text-emerald-700">{success}</p>}
 
           <button disabled={isSubmitting} className="w-full rounded-xl bg-primary text-white py-3 font-medium hover:opacity-95">
-            {isSubmitting ? 'Resetting...' : 'Reset password'}
+            {isSubmitting ? t('resetPassword.resetting') : t('resetPassword.reset')}
           </button>
         </form>
 
         <p className="mt-4 text-sm text-slate-600">
-          Back to <Link to="/login" className="text-primary font-medium">Login</Link>
+          {t('forgotPassword.backTo')} <Link to="/login" className="text-primary font-medium">{t('landing.login')}</Link>
         </p>
       </div>
     </div>

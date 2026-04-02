@@ -1,11 +1,13 @@
 import { Bell, Building2, LogOut, Moon, Sun } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import api from '../services/api';
 
 export default function Navbar() {
+  const { t, i18n } = useTranslation();
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [showNotifications, setShowNotifications] = useState(false);
@@ -95,18 +97,31 @@ export default function Navbar() {
         </div>
         <div>
           <h1 className="text-lg font-heading font-semibold">CivicPulse 🏙️</h1>
-          <p className="text-xs text-slate-500">Smart City Grievance Portal 🚦</p>
+          <p className="text-xs text-slate-500">{t('navbar.tagline')} 🚦</p>
         </div>
       </div>
       <div className="flex items-center gap-4">
+        <div className="relative">
+          <label htmlFor="language-switcher" className="sr-only">{t('navbar.language')}</label>
+          <select
+            id="language-switcher"
+            value={i18n.resolvedLanguage || i18n.language || 'en'}
+            onChange={(event) => i18n.changeLanguage(event.target.value)}
+            className="appearance-none rounded-lg border border-slate-200 bg-white/80 px-2.5 py-2 pr-7 text-xs sm:text-sm font-medium text-slate-700 shadow-sm hover:bg-white focus:outline-none focus:ring-2 focus:ring-primary/30"
+          >
+            <option value="en">{t('navbar.english')}</option>
+            <option value="hi">{t('navbar.hindi')}</option>
+            <option value="mr">{t('navbar.marathi')}</option>
+          </select>
+        </div>
         <button
           type="button"
           onClick={toggleTheme}
           className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm hover:bg-slate-50 hover-lift"
-          title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          title={theme === 'dark' ? t('navbar.themeLight') : t('navbar.themeDark')}
         >
           {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-          <span className="hidden sm:inline">{theme === 'dark' ? 'Light' : 'Dark'}</span>
+          <span className="hidden sm:inline">{theme === 'dark' ? t('navbar.light') : t('navbar.dark')}</span>
         </button>
         <div className="relative" ref={panelRef}>
           <button
@@ -128,21 +143,21 @@ export default function Navbar() {
           {showNotifications && (
             <div className="absolute right-0 mt-2 w-[320px] max-h-[420px] overflow-auto rounded-2xl border border-slate-200 bg-white shadow-card z-30">
               <div className="p-3 border-b border-slate-100 flex items-center justify-between">
-                <p className="text-sm font-semibold text-slate-800">Notifications</p>
+                <p className="text-sm font-semibold text-slate-800">{t('navbar.notifications')}</p>
                 <button
                   type="button"
                   onClick={markAllAsRead}
                   className="text-xs text-primary font-medium disabled:text-slate-400"
                   disabled={!notifications.some((item) => !item.read)}
                 >
-                  Mark all read
+                  {t('navbar.markAllRead')}
                 </button>
               </div>
 
               {loadingNotifications ? (
-                <p className="p-4 text-sm text-slate-500">Loading notifications...</p>
+                <p className="p-4 text-sm text-slate-500">{t('navbar.loadingNotifications')}</p>
               ) : notifications.length === 0 ? (
-                <p className="p-4 text-sm text-slate-500">No notifications yet.</p>
+                <p className="p-4 text-sm text-slate-500">{t('navbar.noNotifications')}</p>
               ) : (
                 <div className="divide-y divide-slate-100">
                   {notifications.map((item) => (
@@ -157,7 +172,7 @@ export default function Navbar() {
                               className="text-xs text-primary font-medium"
                               onClick={() => setShowNotifications(false)}
                             >
-                              View complaint
+                              {t('navbar.viewComplaint')}
                             </Link>
                           )}
                           {!item.read && (
@@ -166,7 +181,7 @@ export default function Navbar() {
                               onClick={() => markOneAsRead(item.id)}
                               className="text-xs text-slate-600 font-medium"
                             >
-                              Mark read
+                              {t('navbar.markRead')}
                             </button>
                           )}
                         </div>
@@ -186,7 +201,7 @@ export default function Navbar() {
           onClick={logout}
           className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm hover:bg-slate-50 hover-lift"
         >
-          <LogOut size={16} /> Logout
+          <LogOut size={16} /> {t('common.logout')}
         </button>
       </div>
     </header>
