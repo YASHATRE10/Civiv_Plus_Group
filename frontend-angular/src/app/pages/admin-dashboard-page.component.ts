@@ -166,7 +166,7 @@ import { ThemeService } from '../core/theme.service';
                 </select>
               </td>
               <td>
-                <button [disabled]="!assignForm[c.id].officerId || c.status === 'RESOLVED'" (click)="assignComplaint(c.id)" class="rounded-lg bg-primary px-3 py-1 text-white disabled:opacity-50 dark:shadow-none">
+                <button [disabled]="!canAssign(c)" (click)="assignComplaint(c.id)" class="rounded-lg bg-primary px-3 py-1 text-white disabled:opacity-50 dark:shadow-none">
                   {{ 'adminDashboard.manage.assignButton' | translate }}
                 </button>
               </td>
@@ -310,10 +310,7 @@ export class AdminDashboardPageComponent implements OnInit, AfterViewInit, OnDes
     } finally {
       this.isLoadingData = false;
       this.loading = false;
-      this.cdr.detectChanges();
-      if (!this.error && !this.isDestroyed) {
-        this.scheduleChartRender();
-      }
+      this.cdr.markForCheck();
     }
   }
 
@@ -382,7 +379,8 @@ export class AdminDashboardPageComponent implements OnInit, AfterViewInit, OnDes
 
   async assignComplaint(complaintId: number): Promise<void> {
     const form = this.assignForm[complaintId];
-    if (!form?.officerId) return;
+    const complaint = this.complaints.find((item) => item.id === complaintId);
+    if (!form?.officerId || !complaint || !this.canAssign(complaint)) return;
 
     try {
       await this.http
@@ -407,6 +405,20 @@ export class AdminDashboardPageComponent implements OnInit, AfterViewInit, OnDes
   logout(): void {
     this.auth.logout();
     this.router.navigate(['/login']);
+  }
+
+  canAssign(complaint: Complaint): boolean {
+    const form = this.assignForm[complaint.id];
+    if (!form?.officerId || complaint.status === 'RESOLVED') {
+      return false;
+    }
+
+    const selectedOfficerId = Number(form.officerId);
+    const currentOfficerId = complaint.assignedOfficerId ?? null;
+    const currentPriority = complaint.priority || 'MEDIUM';
+
+    const assignmentChanged = currentOfficerId !== selectedOfficerId || currentPriority !== form.priority;
+    return assignmentChanged;
   }
 
   openAnalytics(): void {
@@ -450,7 +462,7 @@ export class AdminDashboardPageComponent implements OnInit, AfterViewInit, OnDes
     this.destroyCharts();
 
     const mockReports = this.buildMockReports();
-    const categoryData = this.buildCategoryPieData();
+    const categories = this.reports.categories.length > 0 ? this.reports.categories : mockReports.categories;
     const monthly = this.reports.monthly.length > 0 ? this.reports.monthly : mockReports.monthly;
     const sla = this.reports.sla.length > 0 ? this.reports.sla : mockReports.sla;
 
@@ -464,8 +476,8 @@ export class AdminDashboardPageComponent implements OnInit, AfterViewInit, OnDes
           plugins: { legend: { position: 'bottom' } }
         },
         data: {
-          labels: categoryData.labels,
-          datasets: [{ data: categoryData.values, backgroundColor: AdminDashboardPageComponent.CATEGORY_COLORS }]
+          labels: categories.map((i) => this.translate.instant(`categories.${i.category}`)),
+          datasets: [{ data: categories.map((i) => i.count), backgroundColor: AdminDashboardPageComponent.CATEGORY_COLORS }]
         }
       });
 
@@ -628,34 +640,6 @@ export class AdminDashboardPageComponent implements OnInit, AfterViewInit, OnDes
         { id: 4, days: 4 }
       ]
     };
-  }
-
-  private buildCategoryPieData(): { labels: string[]; values: number[] } {
-    const source = this.reports.categories.length > 0 ? this.reports.categories : this.buildMockReports().categories;
-    const filtered = source.filter((item) => Number.isFinite(item.count) && item.count > 0);
-
-    if (filtered.length === 0) {
-      return {
-        labels: ['Road', 'Water', 'Sanitation'],
-        values: [3, 2, 1]
-      };
-    }
-
-    return {
-      labels: filtered.map((item) => this.formatCategoryLabel(item.category)),
-      values: filtered.map((item) => item.count)
-    };
-  }
-
-  private formatCategoryLabel(raw: string): string {
-    const normalized = String(raw || '').trim();
-    if (!normalized) return 'Other';
-
-    const words = normalized.replace(/[_-]+/g, ' ').toLowerCase().split(' ').filter(Boolean);
-    const titleCase = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-    const translated = this.translate.instant(`categories.${normalized}`);
-
-    return translated && translated !== `categories.${normalized}` ? translated : titleCase;
   }
 
   private getStringField(record: Record<string, unknown>, keys: string[]): string {
