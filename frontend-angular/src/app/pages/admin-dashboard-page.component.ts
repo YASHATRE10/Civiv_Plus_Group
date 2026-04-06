@@ -74,57 +74,9 @@ import { ThemeService } from '../core/theme.service';
         </div>
       </section>
 
-      <section class="grid grid-cols-2 gap-3 lg:grid-cols-5">
-        <article class="glass rounded-2xl p-4 shadow-card hover-lift"><p class="text-xs uppercase tracking-wide text-slate-500">{{ 'adminDashboard.cards.total' | translate }}</p><p class="text-3xl font-semibold mt-2">{{ complaints.length }}</p></article>
-        <article class="glass rounded-2xl p-4 shadow-card hover-lift"><p class="text-xs uppercase tracking-wide text-slate-500">{{ 'adminDashboard.cards.pending' | translate }}</p><p class="text-3xl font-semibold mt-2 text-amber-600">{{ pendingCount }}</p></article>
-        <article class="glass rounded-2xl p-4 shadow-card hover-lift"><p class="text-xs uppercase tracking-wide text-slate-500">{{ 'adminDashboard.cards.resolved' | translate }}</p><p class="text-3xl font-semibold mt-2 text-emerald-600">{{ resolvedCount }}</p></article>
-        <article class="glass rounded-2xl p-4 shadow-card hover-lift"><p class="text-xs uppercase tracking-wide text-slate-500">{{ 'adminDashboard.cards.avgResolution' | translate }}</p><p class="text-3xl font-semibold mt-2 text-primary">{{ avgResolution }}</p></article>
-        <article class="glass rounded-2xl p-4 shadow-card hover-lift"><p class="text-xs uppercase tracking-wide text-slate-500">{{ 'adminDashboard.cards.activeOfficers' | translate }}</p><p class="text-3xl font-semibold mt-2 text-blue-600">{{ officers.length }}</p></article>
-      </section>
-
-      <section class="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <article class="glass rounded-2xl p-5 shadow-card">
-          <div class="mb-4 flex items-center justify-between gap-3">
-            <h3 class="font-semibold">{{ 'adminDashboard.charts.byCategory' | translate }}</h3>
-            <span class="text-xs text-slate-500">Distribution</span>
-          </div>
-          <div class="relative h-80 min-h-[18rem] w-full">
-            <canvas #categoryChart class="block h-full w-full" style="display:block;width:100%;height:100%;"></canvas>
-          </div>
-        </article>
-        <article class="glass rounded-2xl p-5 shadow-card">
-          <div class="mb-4 flex items-center justify-between gap-3">
-            <h3 class="font-semibold">{{ 'adminDashboard.charts.monthly' | translate }}</h3>
-            <span class="text-xs text-slate-500">Volume trend</span>
-          </div>
-          <div class="relative h-80 min-h-[18rem] w-full">
-            <canvas #monthlyChart class="block h-full w-full" style="display:block;width:100%;height:100%;"></canvas>
-          </div>
-        </article>
-
-        <article class="glass rounded-2xl p-5 shadow-card">
-          <div class="mb-4 flex items-center justify-between gap-3">
-            <h3 class="font-semibold">{{ 'adminDashboard.charts.resolutionTrend' | translate }}</h3>
-            <span class="text-xs text-slate-500">SLA snapshot</span>
-          </div>
-          <div class="relative h-80 min-h-[18rem] w-full">
-            <canvas #slaChart class="block h-full w-full" style="display:block;width:100%;height:100%;"></canvas>
-          </div>
-        </article>
-
-        <article class="glass rounded-2xl p-5 shadow-card">
-          <div class="mb-4 flex items-center justify-between gap-3">
-            <h3 class="font-semibold">{{ 'adminDashboard.charts.problemZones' | translate }}</h3>
-            <span class="text-xs text-slate-500">{{ 'adminDashboard.charts.zone' | translate }}</span>
-          </div>
-          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div *ngFor="let zone of zoneCards" class="rounded-xl p-3 text-white" [ngClass]="zone.colorClass">
-              <p class="text-[11px] uppercase tracking-wide text-white/80">{{ zone.label }}</p>
-              <p class="mt-1 text-3xl font-semibold leading-none">{{ zone.count }}</p>
-            </div>
-          </div>
-        </article>
-      </section>
+      <div class="rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-900">
+        Assignment-only mode enabled for Admin Dashboard.
+      </div>
 
       <div *ngIf="!chartOnly" class="glass rounded-2xl p-4 shadow-card overflow-x-auto">
         <div class="flex flex-col md:flex-row md:items-center gap-3 md:justify-between mb-4">
