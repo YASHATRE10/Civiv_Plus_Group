@@ -204,10 +204,10 @@
     "rate": "Rate {{value}} stars"
   },
   "analyticsPage": {
-    "eyebrow": "Module 6 · Analytics and Reporting",
-    "adminTitle": "Administrative Analytics Overview",
-    "officerTitle": "Officer Analytics Overview",
-    "subtitle": "Operational complaint insights, SLA performance, and zone risk trends at a glance.",
+    "eyebrow": "Analytics and Reports",
+    "adminTitle": "Admin Analytics Dashboard",
+    "officerTitle": "Officer Analytics Dashboard",
+    "subtitle": "Complaint trends, SLA performance, and zone risk insights.",
     "actions": {
       "backToDashboard": "Back to Dashboard",
       "switchToDark": "Switch to Dark Mode",
