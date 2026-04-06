@@ -19,19 +19,19 @@ public class ReportController {
     private final ReportService reportService;
 
     @GetMapping("/categories")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','OFFICER')")
     public ResponseEntity<List<Map<String, Object>>> categories() {
         return ResponseEntity.ok(reportService.categoryReport());
     }
 
     @GetMapping("/monthly")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','OFFICER')")
     public ResponseEntity<List<Map<String, Object>>> monthly() {
         return ResponseEntity.ok(reportService.monthlyReport());
     }
 
     @GetMapping("/sla")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','OFFICER')")
     public ResponseEntity<List<Map<String, Object>>> sla() {
         return ResponseEntity.ok(reportService.slaReport());
     }

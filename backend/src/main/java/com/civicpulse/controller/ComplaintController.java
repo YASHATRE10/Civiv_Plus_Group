@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/complaints")
@@ -62,16 +63,26 @@ public class ComplaintController {
 
     @PutMapping(value = "/status", consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole('ADMIN','OFFICER','CITIZEN')")
-    public ResponseEntity<ComplaintResponse> updateStatusJson(@RequestBody StatusUpdateRequest request) {
-        return ResponseEntity.ok(complaintService.updateStatus(request, null));
+    public ResponseEntity<ComplaintResponse> updateStatusJson(@RequestBody StatusUpdateRequest request, Authentication authentication) {
+        return ResponseEntity.ok(complaintService.updateStatus(request, null, currentRole(authentication)));
     }
 
     @PutMapping(value = "/status", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('ADMIN','OFFICER','CITIZEN')")
     public ResponseEntity<ComplaintResponse> updateStatus(
             @RequestPart("payload") StatusUpdateRequest request,
-            @RequestPart(value = "proofImage", required = false) MultipartFile proofImage
+            @RequestPart(value = "proofImage", required = false) MultipartFile proofImage,
+            Authentication authentication
     ) {
-        return ResponseEntity.ok(complaintService.updateStatus(request, proofImage));
+        return ResponseEntity.ok(complaintService.updateStatus(request, proofImage, currentRole(authentication)));
+    }
+
+    private com.civicpulse.entity.Role currentRole(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .map(authority -> authority.getAuthority())
+                .map(value -> value.startsWith("ROLE_") ? value.substring(5) : value)
+                .map(com.civicpulse.entity.Role::valueOf)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Role not found"));
     }
 }

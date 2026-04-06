@@ -95,7 +95,7 @@ public class ComplaintService {
     }
 
     @Transactional
-    public ComplaintResponse updateStatus(StatusUpdateRequest request, MultipartFile proofImage) {
+    public ComplaintResponse updateStatus(StatusUpdateRequest request, MultipartFile proofImage, Role actorRole) {
         if (request.getComplaintId() == null || request.getStatus() == null) {
             throw new IllegalArgumentException("Complaint and status are required");
         }
@@ -105,12 +105,32 @@ public class ComplaintService {
                 .orElseThrow(() -> new IllegalArgumentException("Complaint not found"));
 
         ComplaintStatus previousStatus = complaint.getStatus();
+        ComplaintStatus nextStatus = request.getStatus();
 
-        complaint.setStatus(request.getStatus());
+        if (previousStatus == ComplaintStatus.RESOLVED && nextStatus == ComplaintStatus.IN_PROGRESS && actorRole != Role.ADMIN) {
+            throw new IllegalArgumentException("Only admin can move a resolved complaint back to in progress");
+        }
+
+        if (nextStatus == ComplaintStatus.REOPENED) {
+            if (actorRole != Role.CITIZEN) {
+                throw new IllegalArgumentException("Only citizen can reopen a complaint");
+            }
+            if (previousStatus != ComplaintStatus.RESOLVED) {
+                throw new IllegalArgumentException("Only resolved complaints can be reopened");
+            }
+        }
+
+        if (nextStatus == ComplaintStatus.RESOLVED && actorRole == Role.CITIZEN) {
+            throw new IllegalArgumentException("Citizen cannot resolve complaints");
+        }
+
+        complaint.setStatus(nextStatus);
         complaint.setResolutionNote(request.getResolutionNote());
 
-        if (request.getStatus() == ComplaintStatus.RESOLVED) {
+        if (nextStatus == ComplaintStatus.RESOLVED) {
             complaint.setResolvedDate(LocalDateTime.now());
+        } else if (nextStatus == ComplaintStatus.REOPENED) {
+            complaint.setResolvedDate(null);
         }
 
         if (proofImage != null && !proofImage.isEmpty()) {
