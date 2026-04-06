@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, firstValueFrom, of, timeout } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,8 +12,10 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 import Chart from 'chart.js/auto';
 import { AuthService } from '../../core/auth.service';
+import { ThemeService } from '../../core/theme.service';
 import { Complaint } from '../../shared/models';
 import { AnalyticsFilter, CategoryReportItem, MonthlyReportItem, SlaReportItem, ZoneHeatmapItem } from './analytics.models';
 import { AnalyticsService } from './analytics.service';
@@ -32,16 +34,28 @@ import { AnalyticsService } from './analytics.service';
     MatNativeDateModule,
     MatButtonModule,
     MatTableModule,
-    MatIconModule
+    MatIconModule,
+    TranslateModule
   ],
   template: `
     <section class="analytics-page space-y-4">
       <mat-card class="hero-card">
         <div class="hero-row">
           <div>
-            <p class="eyebrow">Module 6 · Analytics & Reports</p>
-            <h2>{{ isOfficerMode ? 'Officer Analytics Dashboard' : 'Admin Analytics Dashboard' }}</h2>
-            <p class="subtitle">Live complaint intelligence with SLA performance and red-zone risk heatmap.</p>
+            <p class="eyebrow">{{ 'analyticsPage.eyebrow' | translate }}</p>
+            <h2>{{ isOfficerMode ? ('analyticsPage.officerTitle' | translate) : ('analyticsPage.adminTitle' | translate) }}</h2>
+            <p class="subtitle">{{ 'analyticsPage.subtitle' | translate }}</p>
+          </div>
+          <div class="hero-actions">
+            <button mat-stroked-button type="button" (click)="goToDashboard()">
+              {{ 'analyticsPage.actions.backToDashboard' | translate }}
+            </button>
+            <button mat-stroked-button type="button" (click)="toggleTheme()">
+              {{ theme.theme() === 'dark' ? ('analyticsPage.actions.switchToLight' | translate) : ('analyticsPage.actions.switchToDark' | translate) }}
+            </button>
+            <button mat-flat-button color="warn" type="button" (click)="logout()">
+              {{ 'common.logout' | translate }}
+            </button>
           </div>
         </div>
       </mat-card>
@@ -51,80 +65,74 @@ import { AnalyticsService } from './analytics.service';
 
       <mat-card class="filter-card">
         <form [formGroup]="filterForm" class="filter-grid">
-          <mat-form-field appearance="outline">
-            <mat-label>From</mat-label>
-            <input matInput [matDatepicker]="fromPicker" formControlName="from" />
+          <mat-form-field appearance="outline" class="filter-field">
+            <input matInput [matDatepicker]="fromPicker" formControlName="from" [placeholder]="('analyticsPage.filters.from' | translate)" />
             <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
             <mat-datepicker #fromPicker></mat-datepicker>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label>To</mat-label>
-            <input matInput [matDatepicker]="toPicker" formControlName="to" />
+          <mat-form-field appearance="outline" class="filter-field">
+            <input matInput [matDatepicker]="toPicker" formControlName="to" [placeholder]="('analyticsPage.filters.to' | translate)" />
             <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
             <mat-datepicker #toPicker></mat-datepicker>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Category</mat-label>
-            <mat-select formControlName="category">
-              <mat-option value="ALL">All</mat-option>
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-select formControlName="category" [placeholder]="('analyticsPage.filters.category' | translate)">
+              <mat-option value="ALL">{{ 'analyticsPage.filters.allCategories' | translate }}</mat-option>
               <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Zone</mat-label>
-            <mat-select formControlName="zone">
-              <mat-option value="ALL">All</mat-option>
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-select formControlName="zone" [placeholder]="('analyticsPage.filters.zone' | translate)">
+              <mat-option value="ALL">{{ 'analyticsPage.filters.allZones' | translate }}</mat-option>
               <mat-option *ngFor="let zone of zones" [value]="zone">{{ zone }}</mat-option>
             </mat-select>
           </mat-form-field>
 
           <button mat-flat-button color="primary" type="button" (click)="applyFilters()">
-            <mat-icon>filter_alt</mat-icon>
-            Apply Filters
+            {{ 'analyticsPage.filters.apply' | translate }}
           </button>
 
           <button mat-stroked-button type="button" (click)="resetFilters()">
-            <mat-icon>restart_alt</mat-icon>
-            Reset
+            {{ 'analyticsPage.filters.reset' | translate }}
           </button>
         </form>
       </mat-card>
 
       <section class="summary-grid">
         <mat-card class="summary-card">
-          <p>Total Complaints</p>
+          <p>{{ 'analyticsPage.summary.total' | translate }}</p>
           <h3>{{ summary.total }}</h3>
         </mat-card>
         <mat-card class="summary-card">
-          <p>Resolved</p>
+          <p>{{ 'analyticsPage.summary.resolved' | translate }}</p>
           <h3 class="resolved">{{ summary.resolved }}</h3>
         </mat-card>
         <mat-card class="summary-card">
-          <p>Pending</p>
+          <p>{{ 'analyticsPage.summary.pending' | translate }}</p>
           <h3 class="pending">{{ summary.pending }}</h3>
         </mat-card>
         <mat-card class="summary-card">
-          <p>SLA Breached</p>
+          <p>{{ 'analyticsPage.summary.slaBreached' | translate }}</p>
           <h3 class="breached">{{ summary.slaBreached }}</h3>
         </mat-card>
       </section>
 
       <section class="chart-grid">
         <mat-card class="chart-card">
-          <h4>Complaints by Category</h4>
+          <h4>{{ 'analyticsPage.charts.byCategory' | translate }}</h4>
           <div class="canvas-wrap"><canvas #pieCanvas style="display:block;width:100%;height:100%;"></canvas></div>
         </mat-card>
 
         <mat-card class="chart-card">
-          <h4>SLA Performance</h4>
+          <h4>{{ 'analyticsPage.charts.slaPerformance' | translate }}</h4>
           <div class="canvas-wrap"><canvas #barCanvas style="display:block;width:100%;height:100%;"></canvas></div>
         </mat-card>
 
         <mat-card class="chart-card trend-card">
-          <h4>Complaints Trend Over Time</h4>
+          <h4>{{ 'analyticsPage.charts.trend' | translate }}</h4>
           <div class="canvas-wrap"><canvas #lineCanvas style="display:block;width:100%;height:100%;"></canvas></div>
         </mat-card>
       </section>
@@ -132,8 +140,8 @@ import { AnalyticsService } from './analytics.service';
       <section class="heatmap-grid">
         <mat-card class="heatmap-card">
           <div class="heatmap-head">
-            <h4>Red-Zone Heatmap</h4>
-            <span>Repeated complaint hotspots</span>
+            <h4>{{ 'analyticsPage.heatmap.title' | translate }}</h4>
+            <span>{{ 'analyticsPage.heatmap.subtitle' | translate }}</span>
           </div>
 
           <div class="zone-grid">
@@ -150,20 +158,20 @@ import { AnalyticsService } from './analytics.service';
         </mat-card>
 
         <mat-card>
-          <h4>Zone Report</h4>
+          <h4>{{ 'analyticsPage.zoneReport.title' | translate }}</h4>
           <table mat-table [dataSource]="zoneHeatmap" class="mat-elevation-z0 zone-table">
             <ng-container matColumnDef="zone">
-              <th mat-header-cell *matHeaderCellDef>Zone</th>
+              <th mat-header-cell *matHeaderCellDef>{{ 'analyticsPage.zoneReport.zone' | translate }}</th>
               <td mat-cell *matCellDef="let row">{{ row.zone }}</td>
             </ng-container>
 
             <ng-container matColumnDef="count">
-              <th mat-header-cell *matHeaderCellDef>Complaints</th>
+              <th mat-header-cell *matHeaderCellDef>{{ 'analyticsPage.zoneReport.complaints' | translate }}</th>
               <td mat-cell *matCellDef="let row">{{ row.count }}</td>
             </ng-container>
 
             <ng-container matColumnDef="severity">
-              <th mat-header-cell *matHeaderCellDef>Severity</th>
+              <th mat-header-cell *matHeaderCellDef>{{ 'analyticsPage.zoneReport.severity' | translate }}</th>
               <td mat-cell *matCellDef="let row">{{ row.severity }}</td>
             </ng-container>
 
@@ -189,7 +197,23 @@ import { AnalyticsService } from './analytics.service';
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .hero-actions button {
+      border-radius: 999px;
+      min-height: 40px;
+      padding-inline: 16px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
     }
 
     .eyebrow {
@@ -215,13 +239,48 @@ import { AnalyticsService } from './analytics.service';
 
     .filter-card {
       border-radius: 16px;
+      padding: 6px;
+      overflow: visible;
     }
 
     .filter-grid {
       display: grid;
-      grid-template-columns: repeat(6, minmax(120px, 1fr));
+      grid-template-columns: repeat(4, minmax(170px, 1fr)) minmax(150px, 190px) minmax(110px, 150px);
       gap: 12px;
       align-items: center;
+    }
+
+    .filter-grid button {
+      min-height: 42px;
+      border-radius: 999px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    :host ::ng-deep .filter-field .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    :host ::ng-deep .filter-field .mat-mdc-form-field-infix {
+      min-height: 52px;
+      padding-top: 12px;
+      padding-bottom: 8px;
+    }
+
+    :host ::ng-deep .filter-field .mat-mdc-text-field-wrapper {
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.92);
+      overflow: visible;
+    }
+
+    :host ::ng-deep .filter-field .mat-mdc-form-field-flex {
+      min-height: 52px;
+      align-items: center;
+    }
+
+    :host ::ng-deep .filter-field .mat-mdc-select-value,
+    :host ::ng-deep .filter-field input.mat-mdc-input-element {
+      font-weight: 500;
     }
 
     .summary-grid {
@@ -232,19 +291,29 @@ import { AnalyticsService } from './analytics.service';
 
     .summary-card {
       border-radius: 14px;
+      padding: 12px 14px;
+      min-height: 88px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
     }
 
     .summary-card p {
       margin: 0;
       color: #64748b;
       font-size: 12px;
+      line-height: 1.2;
       text-transform: uppercase;
       letter-spacing: 0.06em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .summary-card h3 {
-      margin: 6px 0 0;
-      font-size: 32px;
+      margin: 8px 0 0;
+      font-size: 40px;
       line-height: 1;
       color: #111827;
     }
@@ -355,7 +424,7 @@ import { AnalyticsService } from './analytics.service';
 
     @media (max-width: 1200px) {
       .filter-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .summary-grid {
@@ -394,7 +463,9 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
   private readonly fb = inject(FormBuilder);
   private readonly analyticsService = inject(AnalyticsService);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly auth = inject(AuthService);
+  readonly theme = inject(ThemeService);
   private readonly cdr = inject(ChangeDetectorRef);
 
   complaints: Complaint[] = [];
@@ -454,6 +525,19 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
     this.pieChart?.destroy();
     this.barChart?.destroy();
     this.lineChart?.destroy();
+  }
+
+  goToDashboard(): void {
+    this.router.navigate([this.isOfficerMode ? '/officer' : '/admin']);
+  }
+
+  toggleTheme(): void {
+    this.theme.toggleTheme();
+  }
+
+  logout(): void {
+    this.auth.logout();
+    this.router.navigate(['/login']);
   }
 
   async loadAnalytics(): Promise<void> {

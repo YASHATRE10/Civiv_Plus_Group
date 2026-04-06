@@ -37,8 +37,8 @@
     "rememberMe": "मुझे याद रखें",
     "forgotPassword": "पासवर्ड भूल गए?",
     "signingIn": "साइन इन हो रहा है...",
-    "signIn": "साइन इन",
-    "localTracking": "स्थानीय समस्या ट्रैकिंग",
+        "allCategories": "सभी श्रेणियाँ",
+        "allZones": "सभी क्षेत्र",
     "realtimeNotifications": "रीयल-टाइम सूचनाएं",
     "secureAccess": "सुरक्षित भूमिका-आधारित प्रवेश",
     "portal": "सिविकपल्स पोर्टल",
@@ -202,6 +202,49 @@
   },
   "ratingStars": {
     "rate": "{{value}} स्टार रेट करें"
+  },
+  "analyticsPage": {
+    "eyebrow": "मॉड्यूल 6 · विश्लेषण और रिपोर्टिंग",
+    "adminTitle": "प्रशासक विश्लेषण अवलोकन",
+    "officerTitle": "अधिकारी विश्लेषण अवलोकन",
+    "subtitle": "शिकायतों की संचालनात्मक अंतर्दृष्टि, SLA प्रदर्शन, और क्षेत्रीय जोखिम रुझान एक नज़र में।",
+    "actions": {
+      "backToDashboard": "डैशबोर्ड पर वापस जाएँ",
+      "switchToDark": "डार्क मोड पर स्विच करें",
+      "switchToLight": "लाइट मोड पर स्विच करें"
+    },
+    "filters": {
+      "from": "से",
+      "to": "तक",
+      "category": "श्रेणी",
+      "zone": "क्षेत्र",
+      "all": "सभी",
+      "allCategories": "सभी श्रेणियाँ",
+      "allZones": "सभी क्षेत्र",
+      "apply": "फ़िल्टर लागू करें",
+      "reset": "रीसेट"
+    },
+    "summary": {
+      "total": "कुल शिकायतें",
+      "resolved": "समाधान",
+      "pending": "लंबित",
+      "slaBreached": "SLA उल्लंघन"
+    },
+    "charts": {
+      "byCategory": "श्रेणी अनुसार शिकायतें",
+      "slaPerformance": "SLA प्रदर्शन",
+      "trend": "समय के साथ शिकायतों का ट्रेंड"
+    },
+    "heatmap": {
+      "title": "रेड-ज़ोन हीटमैप",
+      "subtitle": "बार-बार शिकायत वाले हॉटस्पॉट"
+    },
+    "zoneReport": {
+      "title": "क्षेत्र रिपोर्ट",
+      "zone": "क्षेत्र",
+      "complaints": "शिकायतें",
+      "severity": "गंभीरता"
+    }
   },
   "adminDashboard": {
     "title": "एडमिन कमांड सेंटर",

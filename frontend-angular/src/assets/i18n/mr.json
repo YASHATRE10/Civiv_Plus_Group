@@ -203,6 +203,49 @@
   "ratingStars": {
     "rate": "{{value}} स्टार द्या"
   },
+  "analyticsPage": {
+    "eyebrow": "मॉड्यूल 6 · विश्लेषण आणि अहवाल",
+    "adminTitle": "प्रशासकीय विश्लेषण आढावा",
+    "officerTitle": "अधिकारी विश्लेषण आढावा",
+    "subtitle": "तक्रारांवरील कार्यकारी अंतर्दृष्टी, SLA कार्यक्षमता आणि क्षेत्रीय जोखीम प्रवृत्ती एका नजरेत.",
+    "actions": {
+      "backToDashboard": "डॅशबोर्डकडे परत जा",
+      "switchToDark": "डार्क मोडवर बदला",
+      "switchToLight": "लाईट मोडवर बदला"
+    },
+    "filters": {
+      "from": "पासून",
+      "to": "पर्यंत",
+      "category": "श्रेणी",
+      "zone": "क्षेत्र",
+      "all": "सर्व",
+      "allCategories": "सर्व श्रेण्या",
+      "allZones": "सर्व क्षेत्रे",
+      "apply": "फिल्टर लागू करा",
+      "reset": "रीसेट"
+    },
+    "summary": {
+      "total": "एकूण तक्रारी",
+      "resolved": "निकाली",
+      "pending": "प्रलंबित",
+      "slaBreached": "SLA उल्लंघन"
+    },
+    "charts": {
+      "byCategory": "श्रेणीअनुसार तक्रारी",
+      "slaPerformance": "SLA कार्यक्षमता",
+      "trend": "कालानुसार तक्रारींचा ट्रेंड"
+    },
+    "heatmap": {
+      "title": "रेड-झोन हीटमॅप",
+      "subtitle": "पुन्हा येणाऱ्या तक्रारींची हॉटस्पॉट्स"
+    },
+    "zoneReport": {
+      "title": "क्षेत्र अहवाल",
+      "zone": "क्षेत्र",
+      "complaints": "तक्रारी",
+      "severity": "तीव्रता"
+    }
+  },
   "adminDashboard": {
     "title": "प्रशासक कमांड सेंटर",
     "failedLoad": "प्रशासक डॅशबोर्ड लोड करण्यात अयशस्वी",

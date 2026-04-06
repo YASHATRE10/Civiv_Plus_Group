@@ -203,6 +203,49 @@
   "ratingStars": {
     "rate": "Rate {{value}} stars"
   },
+  "analyticsPage": {
+    "eyebrow": "Module 6 · Analytics and Reporting",
+    "adminTitle": "Administrative Analytics Overview",
+    "officerTitle": "Officer Analytics Overview",
+    "subtitle": "Operational complaint insights, SLA performance, and zone risk trends at a glance.",
+    "actions": {
+      "backToDashboard": "Back to Dashboard",
+      "switchToDark": "Switch to Dark Mode",
+      "switchToLight": "Switch to Light Mode"
+    },
+    "filters": {
+      "from": "From",
+      "to": "To",
+      "category": "Category",
+      "zone": "Zone",
+      "all": "All",
+      "allCategories": "All Categories",
+      "allZones": "All Zones",
+      "apply": "Apply Filters",
+      "reset": "Reset"
+    },
+    "summary": {
+      "total": "Total Complaints",
+      "resolved": "Resolved",
+      "pending": "Pending",
+      "slaBreached": "SLA Breached"
+    },
+    "charts": {
+      "byCategory": "Complaints by Category",
+      "slaPerformance": "SLA Performance",
+      "trend": "Complaints Trend Over Time"
+    },
+    "heatmap": {
+      "title": "Red-Zone Heatmap",
+      "subtitle": "Repeated complaint hotspots"
+    },
+    "zoneReport": {
+      "title": "Zone Report",
+      "zone": "Zone",
+      "complaints": "Complaints",
+      "severity": "Severity"
+    }
+  },
   "adminDashboard": {
     "title": "Admin Command Center",
     "failedLoad": "Failed to load admin dashboard",
