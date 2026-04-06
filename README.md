@@ -1,56 +1,65 @@
 # CivicPulse - Smart City Grievance & Feedback Management Portal
 
-A full stack civic issue reporting system with role-based workflows for citizens, officers, and administrators.
+CivicPulse is a full-stack complaint and feedback platform for citizens, officers, and administrators. It includes role-based workflows, assignment management, reporting APIs, and responsive dashboards.
 
 ## Project Structure
 
-- `frontend` - React (Vite) + Tailwind dashboard app
-- `backend` - Spring Boot + JWT + MySQL REST API
+- `backend/` - Spring Boot API (JWT auth, complaints, feedback, reports)
+- `frontend-angular/` - Angular app (role-based dashboards and analytics)
 
-## Frontend Setup
+## Tech Stack
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+- Frontend: Angular, Tailwind CSS, Chart.js
+- Backend: Spring Boot, Spring Security, JWT, Spring Data JPA
+- Database: H2 (default local file DB), optional MySQL profile
 
-Frontend runs on `http://localhost:5173`.
+## Local Setup
 
-## Backend Setup
-
-1. Create MySQL and ensure credentials in `backend/src/main/resources/application.properties` match your environment.
-2. Run backend:
+### 1. Backend
 
 ```bash
 cd backend
 mvn spring-boot:run
 ```
 
-Backend runs on `http://localhost:8080`.
+Backend URL: `http://localhost:8080`
 
-Default seeded admin user:
+Default seeded admin:
 - Email: `admin@civicpulse.com`
 - Password: `Admin@123`
 
-## Implemented Features
+### 2. Frontend (Angular)
 
-- JWT authentication with role-based route access
-- Citizen grievance submission with image upload
-- Admin assignment, priority, deadline, and analytics dashboard charts
-- Officer complaint progress and status updates
-- Citizen feedback/rating and complaint reopening
-- REST APIs for auth, complaints, feedback, and reports
-- Responsive glassmorphism dashboard UI with Lucide icons
+```bash
+cd frontend-angular
+npm install
+npm run start
+```
 
-Set-Location "f:\Github - Copy\Civiv_Plus_Group\backend"; mvn spring-boot:run
+Frontend URL: `http://localhost:4200`
 
+## Key Routes
 
-I’m restarting the backend in a clean way now from the correct folder, with JAVA_HOME set correctly in that terminal session.
+- Admin Dashboard (assignment focused): `http://localhost:4200/admin`
+- Admin Analytics: `http://localhost:4200/analytics`
+- Officer Dashboard: `http://localhost:4200/officer`
+- Officer Analytics: `http://localhost:4200/officer-analytics`
 
-$env:JAVA_HOME = 'C:\Program Files\Java\jdk-22'; $env:Path = "$env:JAVA_HOME\bin;" + ($env:Path -replace [regex]::Escape('C:\Program Files\Java\jdk-22\bin;'), ''); Set-Location "f:\Github - Copy\Civiv_Plus_Group\backend"; mvn spring-boot:run
-Backend failed because the local H2 DB file is locked by another Java process. I’ll find and stop the stale process, then start backend again.
+## Features
 
-I found the stale backend Java process on port 8080 (PID 21548) plus its Maven launcher (PID 12884); I’m stopping both and starting backend fresh now.
+- JWT login and role-based routing
+- Citizen complaint submission with optional image upload
+- Admin officer assignment with priority/deadline updates
+- Officer complaint processing (in-progress/resolved) with notes and proof upload
+- Analytics and reports:
+	- Complaints by category
+	- Monthly trend reporting
+	- SLA performance tracking
+	- Red-zone heatmap for repeated complaint areas
+- Multi-language UI support (English/Hindi/Marathi)
+- Responsive, modern dashboard styling
 
-$env:JAVA_HOME = 'C:\Program Files\Java\jdk-22'; $env:Path = "$env:JAVA_HOME\bin;" + ($env:Path -replace [regex]::Escape('C:\Program Files\Java\jdk-22\bin;'), ''); Set-Location "f:\Github - Copy\Civiv_Plus_Group\backend"; mvn spring-boot:run
+## Notes
+
+- The backend uses file-based H2 DB by default (`backend/data/civicpulse.mv.db`).
+- If backend startup fails due to DB file lock, stop any existing Java process using port `8080` and restart.
