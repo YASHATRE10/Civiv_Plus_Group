@@ -15,6 +15,30 @@ CivicPulse is a full-stack complaint and feedback platform for citizens, officer
 
 ## Local Setup
 
+### Quick Start (Backend + Frontend Together)
+
+From the project root on Windows:
+
+```powershell
+.\start-civicpulse.ps1
+```
+
+Optional (skip frontend dependency install check):
+
+```powershell
+.\start-civicpulse.ps1 -SkipFrontendInstall
+```
+
+This launches:
+- Backend: http://localhost:8080
+- Frontend: http://localhost:4200
+
+If script execution is blocked once, run:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
 ### 1. Backend
 
 ```bash
