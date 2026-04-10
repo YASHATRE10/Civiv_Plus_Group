@@ -13,6 +13,12 @@ CivicPulse is a full-stack complaint and feedback platform for citizens, officer
 - Backend: Spring Boot, Spring Security, JWT, Spring Data JPA
 - Database: H2 (default local file DB), optional MySQL profile
 
+## Prerequisites
+
+- Java 17 (JDK)
+- Maven 3.9+ (or backend Maven wrapper if available)
+- Node.js 18+ and npm
+
 ## Local Setup
 
 ### Quick Start (Backend + Frontend Together)
@@ -87,3 +93,14 @@ Frontend URL: `http://localhost:4200`
 
 - The backend uses file-based H2 DB by default (`backend/data/civicpulse.mv.db`).
 - If backend startup fails due to DB file lock, stop any existing Java process using port `8080` and restart.
+
+### Backend Troubleshooting
+
+If you see `The JAVA_HOME environment variable is not defined correctly`:
+
+```powershell
+$env:JAVA_HOME = 'C:\Program Files\Java\jdk-17'
+mvn spring-boot:run
+```
+
+Or set JAVA_HOME permanently in Windows Environment Variables and restart the terminal.
