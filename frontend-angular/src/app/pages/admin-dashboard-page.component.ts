@@ -297,7 +297,7 @@ export class AdminDashboardPageComponent implements OnInit, AfterViewInit, OnDes
       if (failedRequests > 0) {
         this.warning = `${failedRequests} analytics source(s) unavailable. Chart may be incomplete.`;
       } else if (usedFallback) {
-        this.warning = 'Analytics response was empty or partial. Showing fallback chart data.';
+        this.warning = '';
       }
 
       console.log('[AdminDashboard] Chart datasets after normalization:', this.reports);

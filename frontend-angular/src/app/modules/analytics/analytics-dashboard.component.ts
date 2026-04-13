@@ -582,7 +582,7 @@ export class AnalyticsDashboardComponent implements OnInit, AfterViewInit, OnDes
       if (failedCalls > 0) {
         this.warning = `${failedCalls} analytics source(s) were unavailable. Showing fallback values where needed.`;
       } else if (usedFallback) {
-        this.warning = 'Analytics response was partial or empty. Showing fallback chart data.';
+        this.warning = '';
       }
 
       this.categories = Array.from(new Set(this.complaints.map((item) => item.category))).sort();
